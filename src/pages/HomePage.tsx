@@ -7,160 +7,33 @@ import {
   TextField,
 } from "@mui/material";
 import DownloadImage from "../assets/images/download.png";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { ChangeEventHandler, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import axios from "axios";
 import { Root } from "../extras/types";
 import VideoInfo from "../components/VideoInfo";
+import VideoInfoComponent from "../components/VideoInfo";
 
-const API_BASE_URL = `http://192.168.1.88:3003/extras/v1/api/youtube/download-audio?videoUrl=`;
+const API_BASE_URL = `http://192.168.1.88:5001/extras/v1/api/youtube/video-info?videoUrl=`;
 var static_video_url = "";
 
 const sampleResponse: Root = {
   message: "success",
-  downloadableFormats: [
-    {
-      mimeType: 'audio/webm; codecs="opus"',
-      qualityLabel: null,
-      bitrate: 158394,
-      audioBitrate: 160,
-      itag: 251,
-      initRange: {
-        start: "0",
-        end: "265",
-      },
-      indexRange: {
-        start: "266",
-        end: "840",
-      },
-      lastModified: "1700167103673598",
-      contentLength: "5596757",
-      quality: "tiny",
-      projectionType: "RECTANGULAR",
-      averageBitrate: 135227,
-      audioQuality: "AUDIO_QUALITY_MEDIUM",
-      approxDurationMs: "331101",
-      audioSampleRate: "48000",
-      audioChannels: 2,
-      loudnessDb: 7.6100001,
-      url: "https://rr4---sn-cvh76nle.googlevideo.com/videoplayback?expire=1704509149&ei=fWqYZarSGPSZz7sPnKWGqA4&ip=103.176.70.125&id=o-APBytXw7g9rSKlT8jxOVq8k9It9wHbd3HmzWaoMzJ2Ul&itag=251&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=Fw&mm=31%2C26&mn=sn-cvh76nle%2Csn-h557sn66&ms=au%2Conr&mv=m&mvi=4&pl=24&initcwndbps=1636250&spc=UWF9f5MU2OyFrpAQ2ATEGrp5k-5J_EcNDpVgS5012A&vprv=1&svpuc=1&mime=audio%2Fwebm&ns=R9NKV3R8Cb4U0eJVWCY2KrYQ&gir=yes&clen=5596757&dur=331.101&lmt=1700167103673598&mt=1704487272&fvip=4&keepalive=yes&fexp=24007246&c=WEB&txp=5532434&n=y496J3szTWeF4w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AAO5W4owRQIhANIVsPBiezMohacw81cHl7LkODfh5vjCGL3NpCcpS_KcAiASgTasCTA45LwaU6vV7Tr2JP77LV2dbv59mzowkUgHsA%3D%3D&sig=AJfQdSswRgIhANG_rzqPBDwrX1jf-V1J7sJdcq0GhU5gyDJjiceKJ2H-AiEAn7fg_E1HgHKq5MlFwixzbIqJ7Xodc0PSS1YCv8TgsJY%3D",
-      hasVideo: false,
-      hasAudio: true,
-      container: "webm",
-      codecs: "opus",
-      videoCodec: null,
-      audioCodec: "opus",
-      isLive: false,
-      isHLS: false,
-      isDashMPD: false,
+  videoUrl: "https://youtu.be/P-z3aLhp9w4?si=7Z8powxCY5o0TswE",
+  videoInfo: {
+    title:
+      "Aawara Shaam Hai | Meet Bros Ft. Piyush Mehroliyaa | Manjul, Rits Badiani, Shabbir | Hit Song",
+    description:
+      "The official video of our most Romantic song of 2019, #AawaraShaamHai ! Go hear it now on all audio platforms! ♪  https://mbmusic.fanlink.to/aawarashaamhai\n\nMusic by Meet Bros, sung by Piyush Mehroliya & Lyrics by  Shabbir Ahmed. Featuring Manjul Khattar & Rits Badiani. The video was shot in Shimla by Bideowale Frame Singh.\n\n#MeetBros #PiyushMehroliyaa #ManjulKhattar #RitsBadiani #Trending #GaanaOriginals\n\nFOR MEET BROS & PIYUSH SHOW BOOKING - CONTACT RUCHIR -  9820980000\n\nMB Music is bringing more awesome music for you guys in the coming months so don't forget to Subscribe MB Music : http://bit.ly/SubscribeMBMusic  \n\n--------------------------------------------------------------------------------------------------\nCredits:\n\nSong - Aawara Shaam hai\nMusic - Meet Bros\nSinger - Meet Bros ft. Piyush Mehroliyaa\nLyrics - Shabbir Ahmed\nActor - Manjul Khattar & Rits Badiani\nProgrammed By - Aditya Dev\nGuitars - Pawan Rasaily\nChief Music Assistant & Music Production Head - Uddipan Sharma\nMusic Asst. - Saheb Khan, Piyush Mehroliyaa, Monis Ahmed\nSong Recorded By - Gautam Chakrabortty, Uddipan Sharma & Saheb Khan at Meet Bros Recording Studio \nMix And Mastered By -  Gautam Chakrabortty at Meet Bros Recording Studio\nProduction Managed By - Suraj Kumar, Ruchir Saxena\n\n------------------------------------------------------------------------------------------------\n\n♪ AVAILABLE ON \n\n♪Gaana ; https://gaana.com/song/aawara-shaam-hai\n\n♪ Spotify - https://open.spotify.com/album/0BQZf1njTasEfHzODW19Sq\n\n♪ Wynk - https://wynk.in/music/album/aawara-shaam-hai/pc_EK2892\n\n♪ iTunes -  https://music.apple.com/us/album/aawara-shaam-hai-feat-piyush-mehroliyaa-single/1474053321?ls=1&app=itunes\n\n♪ Apple Music - https://music.apple.com/us/album/aawara-shaam-hai-feat-piyush-mehroliyaa-single/1474053321?ls=1\n\n♪ Jiosaavn - https://www.jiosaavn.com/album/aawara-shaam-hai/V8YNlDBrUO8_\n\n♪ Amazon Music -  https://music.amazon.in/albums/B08DFZ46N5\n\n♪ Hungama - https://www.hungama.com/album/aawara-shaam-hai/55040395/\n\n♪ Resso  - https://m.resso.app/UELUQv/\n\n♪ KKbox  - https://www.kkbox.com/tw/tc/song/P.o00aJ1WA5vCEMxvCEMx0XL-index.html\n\n\n----------------------------------------------------------------------------------------------------------\n\nTo Set Caller Tune Dial Below Codes\n\n♪ Aawara Shaam Hai\nFor Airtel Hello Tunes Dial 5432117153364\nFor Vodafone Caller Tunes Dial 53711501735\nFor Idea Dial Tones Dial 53711501735\nBSNL East & South SMS BT 11501735 to 56700\nMTNL Subscribers SMS PT 11501735 to 56789\n\n♪ Subah Meri Aur Raat Bhi\nFor Airtel Hello Tunes Dial 5432117154091\nFor Vodafone Caller Tunes Dial 53711501755\nFor Idea Dial Tones Dial 53711501755\nBSNL East & South SMS BT 11501755 to 56700\nMTNL Subscribers SMS PT 11501755 to 56789\n\n-----------------------------------------------------------------------------------------------------------\n\nMB Music Team:-\n\nCo-Founder & Label Head:  Raajeev Sharma\nDigital Marketing: Aakash Kumar \nOperations Head: Mitasha Paintal\nAdmin And HR: Madiha Merchant, Vidhi Saraswat, and Yashashree Dasari\n\nGAANA:\nHead- Content & Partnership - Manisha Dey\n\n-----------------------------------------------------------\n Video\n\nFilm By - Bideowale Frame Singh  \nProducer: MB Music\nDirectors - Puneet S Bedi  & Mohit Midda\nDOP - Shoeb Siddiqui \nEditor - Dilpreetvfx\nStill Making - Daas Films\nProduction - Sai Film Productions\nVisual Effects - Fx Corner Studios\nMakeup - Anthea Makeovers\nChoreographer - Sahil\nChild Artist - Lavanya Mittal\nAssistants - Raman, Vivek, Ajay\n\n\nLike/Follow us on:\n\nMB MUSIC\nFacebook: https://www.facebook.com/mbmusicofficial/  \nInstagram: https://www.instagram.com/mbmusicco/\nTwitter: https://twitter.com/MBMusic_Co\n\nMANMEET SINGH\nInstagram:  https://www.instagram.com/meet_bros_manmeet/\nTwitter: https://twitter.com/Mann_meetbros  \n\nHARMEET SINGH\nInstagram: https://www.instagram.com/harmeet_meetbros/ \nTwitter: https://twitter.com/MeetBrosHarmeet \n\nPIYUSH MEHROLIYAA\nInstagram: https://www.instagram.com/piyushmehroliyaa/\n\nMANJUL KHATTAR\nhttps://www.instagram.com/manjullll/\n\nRITS BADIANI\nhttps://www.instagram.com/rits_badiani/\n\nDon't Forget To Like, Comment And Share!!!!!!\n\nManaged and Promoted by ERIK Business Consultancy, Mumbai",
+    totalView: "224361170",
+    channelName: "MB Music",
+    hqThumbnail: {
+      url: "https://i.ytimg.com/vi_webp/P-z3aLhp9w4/maxresdefault.webp",
+      width: 1920,
+      height: 1080,
     },
-    {
-      mimeType: 'audio/mp4; codecs="mp4a.40.2"',
-      qualityLabel: null,
-      bitrate: 130609,
-      audioBitrate: 128,
-      itag: 140,
-      initRange: {
-        start: "0",
-        end: "631",
-      },
-      indexRange: {
-        start: "632",
-        end: "1071",
-      },
-      lastModified: "1700163608019208",
-      contentLength: "5359888",
-      quality: "tiny",
-      projectionType: "RECTANGULAR",
-      averageBitrate: 129489,
-      highReplication: true,
-      audioQuality: "AUDIO_QUALITY_MEDIUM",
-      approxDurationMs: "331139",
-      audioSampleRate: "44100",
-      audioChannels: 2,
-      loudnessDb: 7.6199999,
-      url: "https://rr4---sn-cvh76nle.googlevideo.com/videoplayback?expire=1704509149&ei=fWqYZarSGPSZz7sPnKWGqA4&ip=103.176.70.125&id=o-APBytXw7g9rSKlT8jxOVq8k9It9wHbd3HmzWaoMzJ2Ul&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=Fw&mm=31%2C26&mn=sn-cvh76nle%2Csn-h557sn66&ms=au%2Conr&mv=m&mvi=4&pl=24&initcwndbps=1636250&spc=UWF9f5MU2OyFrpAQ2ATEGrp5k-5J_EcNDpVgS5012A&vprv=1&svpuc=1&mime=audio%2Fmp4&ns=R9NKV3R8Cb4U0eJVWCY2KrYQ&gir=yes&clen=5359888&dur=331.139&lmt=1700163608019208&mt=1704487272&fvip=4&keepalive=yes&fexp=24007246&c=WEB&txp=5532434&n=y496J3szTWeF4w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AAO5W4owRgIhAMC2AiTriYrTBevPM97npOETu_9f2aJ1_UcuA4p6hZbHAiEAk6dUpTUEAC1RIGcD2_6UGGDl0P8z5Mj7xECmTON-_uU%3D&sig=AJfQdSswRgIhAJkmtH8bG-RDbxhksPAA4DHfEqx-QrLg_9USPWGUF6FQAiEA0JVrK1jIIOHuIle9UQKtv7T0HLmG5zZnglT-V2DlF28%3D",
-      hasVideo: false,
-      hasAudio: true,
-      container: "mp4",
-      codecs: "mp4a.40.2",
-      videoCodec: null,
-      audioCodec: "mp4a.40.2",
-      isLive: false,
-      isHLS: false,
-      isDashMPD: false,
-    },
-    {
-      mimeType: 'audio/webm; codecs="opus"',
-      qualityLabel: null,
-      bitrate: 81893,
-      audioBitrate: 64,
-      itag: 250,
-      initRange: {
-        start: "0",
-        end: "265",
-      },
-      indexRange: {
-        start: "266",
-        end: "840",
-      },
-      lastModified: "1700162393807931",
-      contentLength: "2877498",
-      quality: "tiny",
-      projectionType: "RECTANGULAR",
-      averageBitrate: 69525,
-      audioQuality: "AUDIO_QUALITY_LOW",
-      approxDurationMs: "331101",
-      audioSampleRate: "48000",
-      audioChannels: 2,
-      loudnessDb: 7.6100001,
-      url: "https://rr4---sn-cvh76nle.googlevideo.com/videoplayback?expire=1704509149&ei=fWqYZarSGPSZz7sPnKWGqA4&ip=103.176.70.125&id=o-APBytXw7g9rSKlT8jxOVq8k9It9wHbd3HmzWaoMzJ2Ul&itag=250&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=Fw&mm=31%2C26&mn=sn-cvh76nle%2Csn-h557sn66&ms=au%2Conr&mv=m&mvi=4&pl=24&initcwndbps=1636250&spc=UWF9f5MU2OyFrpAQ2ATEGrp5k-5J_EcNDpVgS5012A&vprv=1&svpuc=1&mime=audio%2Fwebm&ns=R9NKV3R8Cb4U0eJVWCY2KrYQ&gir=yes&clen=2877498&dur=331.101&lmt=1700162393807931&mt=1704487272&fvip=4&keepalive=yes&fexp=24007246&c=WEB&txp=5532434&n=y496J3szTWeF4w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AAO5W4owRQIgM72Ir_9qB5EDL4iy_XrzFlnAovq_2I3NDLgwWsr9WkkCIQDFs9YhaTgia35c-akTASgfk452kf8Ygtcq3MwNcScxqA%3D%3D&sig=AJfQdSswRgIhAJpL6gbvK53nYTqlaa3Q7CwNv-8Vq-4NB5PQKOFdLwptAiEA0svvsjpePwPyWIHhz3UZm-yCud0uqOuDocRjoe1Ue7o%3D",
-      hasVideo: false,
-      hasAudio: true,
-      container: "webm",
-      codecs: "opus",
-      videoCodec: null,
-      audioCodec: "opus",
-      isLive: false,
-      isHLS: false,
-      isDashMPD: false,
-    },
-    {
-      mimeType: 'audio/webm; codecs="opus"',
-      qualityLabel: null,
-      bitrate: 62192,
-      audioBitrate: 48,
-      itag: 249,
-      initRange: {
-        start: "0",
-        end: "265",
-      },
-      indexRange: {
-        start: "266",
-        end: "839",
-      },
-      lastModified: "1700160286645946",
-      contentLength: "2190179",
-      quality: "tiny",
-      projectionType: "RECTANGULAR",
-      averageBitrate: 52918,
-      audioQuality: "AUDIO_QUALITY_LOW",
-      approxDurationMs: "331101",
-      audioSampleRate: "48000",
-      audioChannels: 2,
-      loudnessDb: 7.6100001,
-      url: "https://rr4---sn-cvh76nle.googlevideo.com/videoplayback?expire=1704509149&ei=fWqYZarSGPSZz7sPnKWGqA4&ip=103.176.70.125&id=o-APBytXw7g9rSKlT8jxOVq8k9It9wHbd3HmzWaoMzJ2Ul&itag=249&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=Fw&mm=31%2C26&mn=sn-cvh76nle%2Csn-h557sn66&ms=au%2Conr&mv=m&mvi=4&pl=24&initcwndbps=1636250&spc=UWF9f5MU2OyFrpAQ2ATEGrp5k-5J_EcNDpVgS5012A&vprv=1&svpuc=1&mime=audio%2Fwebm&ns=R9NKV3R8Cb4U0eJVWCY2KrYQ&gir=yes&clen=2190179&dur=331.101&lmt=1700160286645946&mt=1704487272&fvip=4&keepalive=yes&fexp=24007246&c=WEB&txp=5532434&n=y496J3szTWeF4w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AAO5W4owRgIhALd81DLOVK7Q6xV5TUSRd7zlwgRxs2-UqhWBvl9Be3TBAiEApNRWRvPmxRx7fw5ETXPnEuovnJgOiXy0C0SC4HbH-is%3D&sig=AJfQdSswRAIgMSyHCj961nUZOo98hyTz7Fvsah6oYe3ipHB8l-ZU-WECIFQsWFQvmsqD282DkIliYmRp7-Q1JQ5d3BLm1rPrjcG6",
-      hasVideo: false,
-      hasAudio: true,
-      container: "webm",
-      codecs: "opus",
-      videoCodec: null,
-      audioCodec: "opus",
-      isLive: false,
-      isHLS: false,
-      isDashMPD: false,
-    },
-  ],
+    durationInMinutes: 5.518983333333333,
+  },
 };
 
 function HomePage(props: any) {
@@ -170,6 +43,11 @@ function HomePage(props: any) {
   const [isTermsAggred, setIsTermsAggred] = useState(true);
   const [isDownloadSuccess, setIsDownloadSuccess] = useState(false);
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    // setIsDownloadSuccess(true);
+    return () => {};
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -298,7 +176,7 @@ function HomePage(props: any) {
           variant="outlined"
         />
         <Button
-          onClick={mimicDownload}
+          onClick={fetchDownloadableLink}
           sx={{ marginTop: "20px", marginBottom: "10px", width: "200px" }}
           variant="contained"
         >
@@ -333,7 +211,7 @@ function HomePage(props: any) {
       {isDownloadSuccess && (
         <div className="border-2 text-center border-blue-500 shadow-sm p-4">
           <div className="flex flex-col items-center md:flex-row font-mono mb-5 justify-center">
-            <h3 className="font-bold text-xl">Audio Fetching Successful</h3>
+            <h3 className="font-bold text-xl">Info Fetching Successful</h3>
             <img
               className="m-2"
               width="30px"
@@ -349,21 +227,6 @@ function HomePage(props: any) {
               src={DownloadImage}
             />
           </div>
-
-          {audioResponse.downloadableFormats.map((format, index) => {
-            return (
-              <Button
-                sx={{ margin: "10px", color: "blue", fontWeight: "bold" }}
-                key={index}
-                variant="outlined"
-                onClick={() => openLink(format.url)}
-              >
-                Download [{format.bitrate}-{format.audioBitrate}-Bitrate] [
-                {format.audioQuality}] [{format.audioSampleRate} Sample]
-                Webm/Mp3
-              </Button>
-            );
-          })}
         </div>
       )}
 
@@ -379,7 +242,16 @@ function HomePage(props: any) {
         </div>
       )}
 
-      <VideoInfo />
+      {isDownloadSuccess && (
+        <VideoInfoComponent
+          title={audioResponse.videoInfo.title}
+          description={audioResponse.videoInfo.description}
+          totalView={audioResponse.videoInfo.totalView}
+          channelName={audioResponse.videoInfo.channelName}
+          hqThumbnail={audioResponse.videoInfo.hqThumbnail}
+          durationInMinutes={audioResponse.videoInfo.durationInMinutes}
+        />
+      )}
     </div>
   );
 }
