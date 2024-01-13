@@ -14,7 +14,7 @@ import { Root } from "../extras/types";
 import VideoInfo from "../components/VideoInfo";
 import VideoInfoComponent from "../components/VideoInfo";
 
-const API_BASE_URL = `http://192.168.1.88:5001/extras/v1/api/youtube/video-info?videoUrl=`;
+const API_BASE_URL = `https://appnor-backend.onrender.com/extras/v1/api/youtube/video-info?videoUrl=`;
 var static_video_url = "";
 
 const sampleResponse: Root = {

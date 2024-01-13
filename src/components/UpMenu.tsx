@@ -195,16 +195,12 @@ function UpMenu(props: any) {
         </div>
 
         <div className="flex items-center justify-center">
-          <img
-            alt=""
-            src={LogoImage}
-            className="w-10 h-10 md:w-14 md:h-14"
-          />
+          <img alt="" src={LogoImage} className="w-10 h-10 md:w-14 md:h-14" />
           <h1
-            style={{ color: headingColor }}
+            style={{ color: "#FF0000" }}
             className="p-5 text-center font-sans text-sm md:text-4xl font-extrabold"
           >
-           Youtube Scrapper
+            Youtube Scrapper
           </h1>
         </div>
 
